@@ -3,6 +3,7 @@ import logging
 import mimetypes
 from api import api_bp
 from flask import Flask, send_from_directory, render_template
+from flask_jwt_extended import JWTManager
 from db import db
 
 mimetypes.add_type('application/javascript', '.js')
@@ -16,8 +17,16 @@ else:
 
 app.config['UPLOAD_FOLDER'] = './uploaded_files'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+app.config['JWT_SECRET_KEY'] = 'dsajihbdsabdnj;knvfhjweasbfi43g82734y238'
+app.config['JWT_TOKEN_LOCATION'] = ['cookies']
+app.config['JWT_ACCESS_COOKIE_NAME'] = 'access_token_cookie'
+app.config['JWT_COOKIE_CSRF_PROTECT'] = False
+app.config['JWT_ACCESS_CSRF_HEADER_NAME'] = 'X-CSRF-TOKEN'
+app.config['JWT_ACCESS_CSRF_FIELD_NAME'] = 'csrf_access_token'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 app.logger.setLevel(logging.DEBUG)
+
+jwt = JWTManager(app)
 
 app.register_blueprint(api_bp)
 
