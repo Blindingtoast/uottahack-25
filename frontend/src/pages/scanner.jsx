@@ -6,7 +6,7 @@ function Scanner() {
   const { toast } = useToast()
 
   let handleScan = (data) => {
-    fetch("/api/scanned/", {
+    fetch("/api/scanned", {
       method: "POST",
       body: data,
     })

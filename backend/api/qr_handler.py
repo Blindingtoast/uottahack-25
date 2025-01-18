@@ -1,10 +1,12 @@
 from flask import Blueprint, request, jsonify
+from flask_jwt_extended import jwt_required
 from db import db
 from models.People import People
 
 QRHandler = Blueprint("qrhandler", __name__)
 
 @QRHandler.route("/scanned", methods=["POST"])
+@jwt_required()
 def qr_scan():
     data = request.get_json()
     qr_code = data.get("qr_code")
