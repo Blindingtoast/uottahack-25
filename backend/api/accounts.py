@@ -12,7 +12,7 @@ def login():
     email = data.get("email")
     password = data.get("password")
     person = People.get_person(email, password)
-    access_token = create_access_token(identity=person.id)
+    access_token = create_access_token(identity=str(person.id), expires_delta=False)
     response = jsonify({"msg": "Login successful"})
     response.set_cookie('access_token_cookie', access_token, httponly=True)
     return response
@@ -27,7 +27,7 @@ def register():
     email = data.get("email")
     password = data.get("password")
     person = People.register_person(name, age, user_type, email, password)
-    access_token = create_access_token(identity=person.id)
+    access_token = create_access_token(identity=str(person.id), expires_delta=False)
     response = jsonify({"msg": "Registration successful"})
     response.set_cookie('access_token_cookie', access_token, httponly=True)
     return response

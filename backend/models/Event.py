@@ -18,10 +18,23 @@ class Event(db.Model):
     def __init__(self, name, description, start_date, end_date, location):
         self.name = name
         self.description = description
-        self.start_date = datetime.strptime(start_date, '%Y-%m-%d %H:%M:%S')
-        self.end_date = datetime.strptime(end_date, '%Y-%m-%d %H:%M:%S')
+        self.start_date = datetime.strptime(start_date.replace('Z', '+00:00'), '%Y-%m-%dT%H:%M:%S.%f%z')
+        self.end_date = datetime.strptime(end_date.replace('Z', '+00:00'), '%Y-%m-%dT%H:%M:%S.%f%z')
         self.location = location
 
+    @staticmethod
+    def get_top_events():
+        return Event.query.filter(Event.end_date > datetime.now()).all()
+    
+    def to_json(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'start_date': self.start_date.strftime('%Y-%m-%dT%H:%M:%S'),
+            'end_date': self.end_date.strftime('%Y-%m-%dT%H:%M:%S'),
+            'location': self.location
+        }
 
     def add_person(self, person):
         self.people.append(person)
