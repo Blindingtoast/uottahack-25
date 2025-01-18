@@ -1,3 +1,4 @@
+from models.EventEntry import EventEntry
 from models.UserType import UserType
 from db import db
 
@@ -44,6 +45,9 @@ class People(db.Model):
         db.session.add(person)
         db.session.commit()
         return person
+    
+    def check_if_registered(self, event_id):
+        return EventEntry.query.filter_by(person_id=self.id, event_id=event_id).first() is not None
 
 
 if __name__ == '__main__':
