@@ -5,6 +5,7 @@ import AuthPage from '@/pages/auth.jsx'
 import EventsPage from '@/pages/events.jsx'
 import ActivitiesPage from '@/pages/activities'
 import CreateEventPage from './pages/create_event'
+import NavBar from './components/navbar'
 
 
 import { StrictMode } from 'react'
@@ -13,6 +14,7 @@ import { BrowserRouter as Router, useParams, Routes, Route } from 'react-router-
 
 createRoot(document.getElementById('root')).render(
   <Router>
+    <NavBar />
     <Routes>
       <Route path="/" element={<App />} />
       <Route path="/scanner/:activityId" element={<Scanner />} />

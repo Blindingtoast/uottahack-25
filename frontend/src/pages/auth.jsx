@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Mail, Lock, ArrowRight, User, Calendar } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const AuthPage = () => {
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     email: '',
@@ -34,6 +36,7 @@ const AuthPage = () => {
 
       if (response.ok) {
         console.log('Success:', await response.json());
+        navigate('/events');
       } else {
         console.error('Error:', response.statusText);
       }
