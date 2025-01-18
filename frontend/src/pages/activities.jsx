@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { SurveyDialog } from "@/components/ui/survey";
 import {
   Card,
   CardContent,

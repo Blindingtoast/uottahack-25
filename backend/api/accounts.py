@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import create_access_token, jwt_required
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from db import db
 from models.People import People
 
@@ -14,7 +14,7 @@ def login():
     person = People.get_person(email, password)
     access_token = create_access_token(identity=str(person.id), expires_delta=False)
     response = jsonify({"msg": "Login successful"})
-    response.set_cookie('access_token_cookie', access_token, httponly=True)
+    response.set_cookie("access_token_cookie", access_token, httponly=True)
     return response
 
 
@@ -29,7 +29,7 @@ def register():
     person = People.register_person(name, age, user_type, email, password)
     access_token = create_access_token(identity=str(person.id), expires_delta=False)
     response = jsonify({"msg": "Registration successful"})
-    response.set_cookie('access_token_cookie', access_token, httponly=True)
+    response.set_cookie("access_token_cookie", access_token, httponly=True)
     return response
 
 
@@ -37,7 +37,7 @@ def register():
 @jwt_required()
 def logout():
     response = jsonify({"msg": "Logout successful"})
-    response.set_cookie('access_token_cookie', "", expires=0)
+    response.set_cookie("access_token_cookie", "", expires=0)
     return response
 
 
@@ -45,3 +45,10 @@ def logout():
 @jwt_required()
 def check():
     return jsonify({"msg": "Access token is valid"})
+
+
+@accounts.route("/getid", methods=["GET"])
+@jwt_required()
+def get_person_id():
+    person_id = get_jwt_identity()
+    return jsonify({"person_id": person_id})
