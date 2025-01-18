@@ -1,15 +1,25 @@
+from db import db
 from Room import Room
 
-class Activity():
 
-    def __init__(self, id, name, description, start_time, end_time, event_id, rooms):
-        self.id = id
+class Activity(db.Model):
+    __tablename__ = 'activities'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(255), nullable=True)
+    start_time = db.Column(db.DateTime, nullable=False)
+    end_time = db.Column(db.DateTime, nullable=False)
+    event_id = db.Column(db.Integer, nullable=False)
+    rooms = db.relationship('Room', backref='activity', lazy=True)
+
+    def __init__(self, name, description, start_time, end_time, event_id, rooms):
         self.name = name
         self.description = description
         self.start_time = start_time
         self.end_time = end_time
         self.event_id = event_id
-        self.rooms = [Room(room['id'], room['name'], room['description'], room['capacity']) for room in rooms]
+        self.rooms = rooms
 
     def change_time(self, start_time, end_time):
         self.start_time = start_time
@@ -20,6 +30,6 @@ class Activity():
 
     def __str__(self):
         return f'{self.name}: {self.description}, from {self.start_time} to {self.end_time}, in {self.rooms}'
-    
+
     def __repr__(self):
         return f'{self.name}: {self.description}, from {self.start_time} to {self.end_time}, in {self.rooms}'
