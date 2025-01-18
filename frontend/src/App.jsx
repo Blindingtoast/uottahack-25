@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
+import { AttendeeQRCode } from '@/components/ui/attendeeqr'
 import { FileForm } from '@/components/ui/fileform'
+import { Scanner } from '@yudiel/react-qr-scanner';
 
 function App() {
   const [msg, setMsg] = useState(0)
@@ -25,16 +27,16 @@ function App() {
   return (
     <>
       <div className="py-4 border-b border-secondary">
-        <h1 className="text-3xl font-semibold ">OEC Preperation</h1>
+        <h1 className="text-3xl font-semibold ">LineLess</h1>
       </div>
       <div id="api" className="py-4">
-        <div id="api-json" className="py-2">
-          <h2 className="font-medium">Flask JSON Response Demonstration</h2>
-          <p className="p-4 my-2 bg-secondary rounded-lg">Message from Flask: <code>{msg}</code></p>
+        <div id = "qrcode" className="py-2">
+          <h2 className="font-medium">Attendee QR</h2>
+          <AttendeeQRCode id="1234" activity="sample" className="bg-secondary p-4 my-2 rounded-lg"/>
         </div>
-        <div id="api-file" className="py-2">
-          <h2 className="font-medium">Flask File Upload Demonstration</h2>
-          <FileForm className="bg-secondary p-4 my-2 rounded-lg"/>
+        <div id = "scanner" className="py-2">
+          <h2 className="font-medium">Scanner</h2>
+          <Scanner onScan={(result) => console.log(result)} />
         </div>
       </div>
     </>
