@@ -4,7 +4,7 @@ from models.People import People
 
 QRHandler = Blueprint("qrhandler", __name__)
 
-@QRHandler.route("/qr_scan", methods=["POST"])
+@QRHandler.route("/scanned", methods=["POST"])
 def qr_scan():
     data = request.get_json()
     qr_code = data.get("qr_code")
