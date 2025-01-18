@@ -1,5 +1,4 @@
 from db import db
-from Room import Room
 
 
 class Activity(db.Model):
@@ -11,7 +10,7 @@ class Activity(db.Model):
     start_time = db.Column(db.DateTime, nullable=False)
     end_time = db.Column(db.DateTime, nullable=False)
     event_id = db.Column(db.Integer, nullable=False)
-    rooms = db.relationship('Room', backref='activity', lazy=True)
+    rooms = db.relationship('rooms', backref='activities', lazy=True)
 
     def __init__(self, name, description, start_time, end_time, event_id, rooms):
         self.name = name
@@ -33,3 +32,6 @@ class Activity(db.Model):
 
     def __repr__(self):
         return f'{self.name}: {self.description}, from {self.start_time} to {self.end_time}, in {self.rooms}'
+    
+    def get_capacities(self):
+        return [room.get_capacity_information() for room in self.rooms]
