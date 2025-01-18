@@ -1,7 +1,15 @@
-class Room():
+from db import db
 
-    def __init__(self, id, name, description, capacity):
-        self.id = id
+
+class Room(db.Model):
+    __tablename__ = 'rooms'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(255), nullable=True)
+    capacity = db.Column(db.Integer, nullable=False)
+
+    def __init__(self, name, description, capacity):
         self.name = name
         self.description = description
         self.capacity = capacity
@@ -11,6 +19,6 @@ class Room():
 
     def __str__(self):
         return f'{self.name}: {self.description}, capacity: {self.capacity}'
-    
+
     def __repr__(self):
         return f'{self.name}: {self.description}, capacity: {self.capacity}'
