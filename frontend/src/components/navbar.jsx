@@ -9,7 +9,7 @@ const NavBar = () => {
           <div className="flex items-center">
             <Link to="/events" className="flex items-center">
               <img
-                src="LineLess_Logo_NoBG.png"
+                src="public/LineLess_Logo_NoBG.png"
                 alt="LineLess Logo"
                 className="h-8 w-8 mr-2"
               />
