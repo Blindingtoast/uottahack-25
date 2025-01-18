@@ -18,6 +18,7 @@ app.config['UPLOAD_FOLDER'] = './uploaded_files'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 app.logger.setLevel(logging.DEBUG)
+
 app.register_blueprint(api_bp)
 
 # Flask serves the whole project for the production build, might be better to 
