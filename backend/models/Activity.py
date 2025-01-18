@@ -2,15 +2,15 @@ from db import db
 
 
 class Activity(db.Model):
-    __tablename__ = 'activities'
+    __tablename__ = 'Activity'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(255), nullable=True)
     start_time = db.Column(db.DateTime, nullable=False)
     end_time = db.Column(db.DateTime, nullable=False)
-    event_id = db.Column(db.Integer, nullable=False)
-    rooms = db.relationship('rooms', backref='activities', lazy=True)
+    people = db.relationship('ActivityEntry', backref='Activity', lazy=True)
+    event = db.Column(db.Integer, db.ForeignKey('Event.id'), nullable=False)
 
     def __init__(self, name, description, start_time, end_time, event_id, rooms):
         self.name = name
