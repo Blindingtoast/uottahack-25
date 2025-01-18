@@ -3,7 +3,7 @@ from db import db
 
 
 class People(db.Model):
-    __tablename__ = 'people'
+    __tablename__ = 'People'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), nullable=False)
@@ -11,6 +11,8 @@ class People(db.Model):
     user_type = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(100), nullable=False)
+    activities = db.relationship('ActivityEntry', backref='People', lazy=True)
+    events = db.relationship('EventEntry', backref='People', lazy=True)
 
     def __init__(self, name, age, user_type, email, password):
         self.name = name

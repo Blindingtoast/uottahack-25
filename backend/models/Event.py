@@ -1,19 +1,19 @@
-from Activity import Activity
+from .Activity import Activity
 from datetime import datetime
 from db import db
 
 
 class Event(db.Model):
-    __tablename__ = 'events'
+    __tablename__ = 'Event'
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(255), nullable=True)
     start_date = db.Column(db.DateTime, nullable=False)
     end_date = db.Column(db.DateTime, nullable=False)
     location = db.Column(db.String(100), nullable=False)
-    people = db.Column(db.PickleType, nullable=True)
-    activities = db.relationship('Activity', backref='event', lazy=True)
+    people = db.relationship('EventEntry', backref='Event', lazy=True)
+    activities = db.relationship('Activity', backref='Event', lazy=True)
 
     def __init__(self, name, description, start_date, end_date, location):
         self.name = name
@@ -21,8 +21,7 @@ class Event(db.Model):
         self.start_date = datetime.strptime(start_date, '%Y-%m-%d %H:%M:%S')
         self.end_date = datetime.strptime(end_date, '%Y-%m-%d %H:%M:%S')
         self.location = location
-        self.people = []
-        self.activities = []
+
 
     def add_person(self, person):
         self.people.append(person)
@@ -47,7 +46,7 @@ class Event(db.Model):
 
 
 if __name__ == '__main__':
-    event = Event(1, 'Event', 'An event', '2022-10-10 08:00:00',
+    event = Event('Event', 'An event', '2022-10-10 08:00:00',
                   '2022-10-10 17:00:00', 'Location')
     print(event.start_date)
     print(event.end_date)
