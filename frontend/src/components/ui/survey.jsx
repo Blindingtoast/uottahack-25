@@ -27,18 +27,25 @@ const SurveyDialog = ({ activityId }) => {
     .then((responsejson) => setPersonId(responsejson.person_id))
     .catch((error) => console.error("Error fetching id:", error));
 
+    let intervalId
     const surveyCompletion = () => {
       fetch(`/api/surveycompletion?activity_id=${activityId}&person_id=${personId}`)
       .then((response) => response.json())
       .then((responsejson) => {
         if (responsejson.completed === "complete") {
           setSurveyComplete(true);  
+          if (intervalId) {
+            clearInterval(intervalId)
+          }
         }
       })
       .catch((error) => console.error("Error:", error));
     }
     surveyCompletion();
-    const intervalId = setInterval(surveyCompletion, 2000);
+    intervalId = setInterval(surveyCompletion, 2000);
+    if (surveyComplete) {
+      clearInterval(intervalId);
+    }
     return () => clearInterval(intervalId);
   });
   const surveylink = `https://www.surveymonkey.com/r/DVLXTFR?person_id=${personId}` 
