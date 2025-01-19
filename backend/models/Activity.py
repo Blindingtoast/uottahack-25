@@ -1,5 +1,7 @@
 from datetime import datetime
+from models.Room import Room
 from models.ActivityEntry import ActivityEntry
+from models.ActivityRoom import ActivityRoom
 from db import db
 
 
@@ -13,6 +15,7 @@ class Activity(db.Model):
     end_time = db.Column(db.DateTime, nullable=False)
     people = db.relationship("ActivityEntry", backref="Activity", lazy=True)
     event = db.Column(db.Integer, db.ForeignKey("Event.id"), nullable=False)
+    rooms = db.relationship("ActivityRoom", backref="Activity", lazy=True)
 
     def __init__(self, name, description, start_time, end_time, event_id, rooms):
         self.name = name
@@ -49,7 +52,8 @@ class Activity(db.Model):
             "start_time": self.start_time.strftime("%Y-%m-%dT%H:%M:%S.%f%z"),
             "end_time": self.end_time.strftime("%Y-%m-%dT%H:%M:%S.%f%z"),
             "event_id": self.event,
-            "people": len(self.people)
+            "people": len(self.people),
+            "rooms": [Room.query.get(room.room_id).to_json() for room in self.rooms],
         }
 
     @staticmethod

@@ -31,6 +31,7 @@ class People(db.Model):
             "name": self.name,
             "age": self.age,
             "user_type": self.user_type,
+            "email": self.email,
         }
 
     @staticmethod

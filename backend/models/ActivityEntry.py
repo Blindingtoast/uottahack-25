@@ -1,6 +1,7 @@
 from sqlalchemy.sql.expression import func
 
 from db import db
+from models.Room import Room
 
 class ActivityEntry(db.Model):
     __tablename__ = 'ActivityEntry'
@@ -25,6 +26,8 @@ class ActivityEntry(db.Model):
         activity_entry.has_entered = 1
         activity_entry.has_exited = 0
         activity_entry.room_id = room_id
+        room = Room.query.filter_by(id=room_id).first()
+        room.ingress += 1
         db.session.commit()
         return activity_entry
     
@@ -32,6 +35,8 @@ class ActivityEntry(db.Model):
     def exit(activity_id, person_id):
         activity_entry = ActivityEntry.query.filter_by(activity_id=activity_id, person_id=person_id).first()
         activity_entry.has_exited = 1
+        room = Room.query.filter_by(id=activity_entry.room_id).first()
+        room.egress += 1
         db.session.commit()
         return activity_entry
     
