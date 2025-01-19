@@ -48,7 +48,7 @@ const SurveyDialog = ({ activityId }) => {
     }
     return () => clearInterval(intervalId);
   });
-  const surveylink = `https://www.surveymonkey.com/r/DVLXTFR?person_id=${personId}` 
+  const surveylink = `https://www.surveymonkey.com/r/DVLXTFR?person_id=${personId}&activity_id=${activityId}`
   return (<>
     <Dialog>
       <VisuallyHidden>

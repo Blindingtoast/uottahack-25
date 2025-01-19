@@ -18,13 +18,13 @@ def check_request_status():
     current_time = time.time()
     if current_time - last_action_time >= 10:
         last_action_time = current_time
-        get_updates(current_app["ACCESS_TOKEN"])
+        get_updates(current_app["COLLECTOR_ID"], current_app["ACCESS_TOKEN"])
 
     return get_completion_status(activity_id, person_id)
 
 
 def get_completion_status(activity_id, person_id):
-    return {"completed": "complete"}
+    return {"completed": "incomplete"}
 
 
 def get_updates(collector_id, access_token, query_params=None):

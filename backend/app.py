@@ -25,6 +25,7 @@ app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
 app.config["JWT_SECRET_KEY"] = "your_jwt_secret_key"
 app.config["JWT_COOKIE_CSRF_PROTECT"] = False
 app.config["ACCESS_TOKEN"] = os.getenv("ACCESS_TOKEN")
+app.config["COLLECTOR_ID"] = os.getenv("COLLECTOR_ID")
 
 app.logger.setLevel(logging.DEBUG)
 
