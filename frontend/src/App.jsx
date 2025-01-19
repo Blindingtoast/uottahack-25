@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { AttendeeQRCode } from '@/components/ui/attendeeqr'
 import { Link } from 'react-router-dom'
+import { SurveyDialog } from '@/components/ui/survey'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <AttendeeQRCode id="1234" activity="sample" className="bg-secondary p-4 my-2 rounded-lg"/>
         </div>
       </div>
+      <SurveyDialog />
       <button>
         <Link to="scanner/somedata">Open Scanner</Link>
       </button>

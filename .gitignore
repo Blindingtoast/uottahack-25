@@ -3,3 +3,5 @@ frontend/dist/*
 backend/venv/*
 backend/**/__pycache__/*
 backend/instance/*
+**/package-lock.json
+**/venv

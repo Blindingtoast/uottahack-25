@@ -5,11 +5,11 @@ import AuthPage from '@/pages/auth.jsx'
 import EventsPage from '@/pages/events.jsx'
 import ActivitiesPage from '@/pages/activities'
 import CreateEventPage from './pages/create_event'
+import CreateActivityPage from "@/pages/create_activity"
 import NavBar from './components/navbar'
 import CreateRoomPage from './pages/create_room'
 import RoomDetailsPage from './pages/view_room'
 import RoomsPage from './pages/rooms'
-
 
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -26,6 +26,7 @@ createRoot(document.getElementById('root')).render(
       <Route path="/events" element={<EventsPage />} />
       <Route path="/events/:eventId" element={<ActivitiesPage />} />
       <Route path="/events/create" element={<CreateEventPage />} />
+      <Route path="/events/:eventId/create" element={<CreateActivityPage />} />
       <Route path="/rooms/create" element={<CreateRoomPage />} />
       <Route path="/rooms/:roomId" element={<RoomDetailsPage />} />
       <Route path="/rooms" element={<RoomsPage />} />

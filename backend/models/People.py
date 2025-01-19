@@ -4,7 +4,7 @@ from db import db
 
 
 class People(db.Model):
-    __tablename__ = 'People'
+    __tablename__ = "People"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), nullable=False)
@@ -12,8 +12,8 @@ class People(db.Model):
     user_type = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    activities = db.relationship('ActivityEntry', backref='People', lazy=True)
-    events = db.relationship('EventEntry', backref='People', lazy=True)
+    activities = db.relationship("ActivityEntry", backref="People", lazy=True)
+    events = db.relationship("EventEntry", backref="People", lazy=True)
 
     def __init__(self, name, age, user_type, email, password):
         self.name = name
@@ -22,23 +22,22 @@ class People(db.Model):
         self.email = email
         self.password = password
 
-
     def subscribe(self, activity):
-        print(f'{self.name} has subscribed to {activity}')
+        print(f"{self.name} has subscribed to {activity}")
 
     def to_json(self):
         return {
-            'id': self.id,
-            'name': self.name,
-            'age': self.age,
-            'user_type': self.user_type,
+            "id": self.id,
+            "name": self.name,
+            "age": self.age,
+            "user_type": self.user_type,
         }
 
     @staticmethod
     def get_person(email, password):
         person = People.query.filter_by(email=email, password=password).first()
         return person
-    
+
     @staticmethod
     def register_person(name, age, user_type, email, password):
         person = People(name, age, user_type, email, password)
@@ -50,11 +49,11 @@ class People(db.Model):
         return EventEntry.query.filter_by(person_id=self.id, event_id=event_id).first() is not None
 
 
-if __name__ == '__main__':
-    admin = People('John', 30, 1, 'Admin', 'test', 'test')
-    atendee = People('Jane', 25, 2, 'Atendee', 'test', 'test')
+if __name__ == "__main__":
+    admin = People("John", 30, 1, "Admin", "test", "test")
+    atendee = People("Jane", 25, 2, "Atendee", "test", "test")
 
     print(admin.user_type.get_user_type())
     print(atendee.user_type.get_user_type())
-    admin.subscribe('Workshop')
-    atendee.subscribe('Workshop')
+    admin.subscribe("Workshop")
+    atendee.subscribe("Workshop")

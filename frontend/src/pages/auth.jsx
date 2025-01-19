@@ -59,7 +59,7 @@ const AuthPage = () => {
       <div className="w-full max-w-md">
         <div className="flex items-center justify-center pb-4">
           <div className="flex items-center">
-            <img src="public/LineLess_Logo_NoBG.png" alt="LineLess Logo" className="h-16 w-16 mr-4" />
+            <img src="/LineLess_Logo_NoBG.png" alt="LineLess Logo" className="h-16 w-16 mr-4" />
             <div className="text-center">
               <h1 className="text-3xl font-bold text-gray-900">LineLess</h1>
               <p className="text-gray-500 mt-2">Welcome back</p>
