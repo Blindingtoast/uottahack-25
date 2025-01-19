@@ -5,26 +5,29 @@ from api import api_bp
 from flask import Flask, send_from_directory, render_template
 from flask_jwt_extended import JWTManager
 from db import db
+from dotenv import load_dotenv
 
 from models.ActivityEntry import ActivityEntry
 from models.EventEntry import EventEntry
 from functions.SampleDataCreator import create_sample
 
-mimetypes.add_type('application/javascript', '.js')
+mimetypes.add_type("application/javascript", ".js")
+load_dotenv()
 
 DEV = False
 
 if DEV:
-    app = Flask(__name__, static_folder='../frontend/dist', static_url_path='')
+    app = Flask(__name__, static_folder="../frontend/dist", static_url_path="")
 else:
-    app = Flask(__name__, static_folder='dist/assets', template_folder='dist')
+    app = Flask(__name__, static_folder="dist/assets", template_folder="dist")
 
-app.config['UPLOAD_FOLDER'] = './uploaded_files'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
-app.config['JWT_TOKEN_LOCATION'] = ['cookies']
-app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'
-app.config['JWT_COOKIE_CSRF_PROTECT'] = False
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
+app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
+app.config["JWT_SECRET_KEY"] = "your_jwt_secret_key"
+app.config["JWT_COOKIE_CSRF_PROTECT"] = False
+app.config["ACCESS_TOKEN"] = os.getenv("ACCESS_TOKEN")
+app.config["COLLECTOR_ID"] = os.getenv("COLLECTOR_ID")
+
 app.logger.setLevel(logging.DEBUG)
 
 jwt = JWTManager(app)
@@ -35,14 +38,15 @@ app.register_blueprint(api_bp)
 # use NGINX
 
 
-@app.route('/')
+@app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template("index.html")
+
 
 # Serves React's static files
 
 
-@app.route('/<path:path>')
+@app.route("/<path:path>")
 def serve_static(path):
     return send_from_directory(app.static_folder, path)
 
@@ -58,5 +62,5 @@ with app.app_context():
     if flag:
         create_sample()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
