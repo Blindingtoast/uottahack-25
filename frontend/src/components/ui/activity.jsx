@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { SurveyDialog } from "@/components/ui/survey";
 import {
   Card,
   CardContent,
@@ -78,7 +78,6 @@ const LiveUpdates = ({ activityId }) => {
 };
 
 const ActivityCard = ({ activity }) => {
-  
   return (
     <Card>
       <div className="grid grid-cols-2">
@@ -124,8 +123,9 @@ const ActivityCard = ({ activity }) => {
           </CardContent>
         </div>
         
-        <CardContent>
-          <LiveUpdates activityId={activity.id} />
+        <CardContent className="flex flex-col h-full">
+          <LiveUpdates activityId={activity.id} className="flex-1 overflow-y" />
+          <SurveyDialog className="flex justify-end"/>
         </CardContent>
       </div>
     </Card>
