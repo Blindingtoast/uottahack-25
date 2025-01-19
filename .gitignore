@@ -5,3 +5,4 @@ backend/**/__pycache__/*
 backend/instance/*
 **/package-lock.json
 **/venv
+**/.env
