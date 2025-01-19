@@ -7,9 +7,8 @@ from flask_jwt_extended import JWTManager
 from db import db
 from dotenv import load_dotenv
 
-from models.ActivityEntry import ActivityEntry
-from models.EventEntry import EventEntry
 from functions.SampleDataCreator import create_sample
+from functions.Scheduler import start_scheduler
 
 mimetypes.add_type("application/javascript", ".js")
 load_dotenv()
@@ -62,5 +61,7 @@ with app.app_context():
     if flag:
         create_sample()
 
-if __name__ == "__main__":
+#start_scheduler(app)
+
+if __name__ == '__main__':
     app.run(debug=True)

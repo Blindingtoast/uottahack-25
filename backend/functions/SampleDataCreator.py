@@ -44,7 +44,7 @@ def create_sample_events():
         Event("UNotAHack", "A hackathon in the heart of the city",
               "2025-01-18T08:00:00.000000+00:00", "2025-01-18T17:00:00.000000+00:00", "City Hall", 1),
         Event("Tech Conference", "A conference for tech enthusiasts",
-              "2025-01-19T08:00:00.000000+00:00", "2025-01-19T17:00:00.000000+00:00", "Convention Center", 1),
+              "2025-01-19T01:00:00.000000+00:00", "2025-01-19T17:00:00.000000+00:00", "Convention Center", 1),
         Event("Startup Weekend", "A weekend for startups",
               "2025-01-20T08:00:00.000000+00:00", "2025-01-20T17:00:00.000000+00:00", "Co-working Space", 5),
         Event("Code Camp", "A camp for coders", "2025-01-21T08:00:00.000000+00:00",
@@ -73,9 +73,9 @@ def create_sample_activities():
     sample_activities = [
         # Activities for UNotAHack
         Activity("Opening Ceremony", "Kickoff the hackathon",
-                 "2025-01-18T08:30:00.000000+00:00", "2025-01-18T09:00:00.000000+00:00", 1, "Main Hall"),
+                 "2025-01-18T08:30:00.000000+00:00", "2025-01-19T22:00:00.000000+00:00", 1, "Main Hall"),
         Activity("Team Formation", "Form teams for the hackathon",
-                 "2025-01-18T09:00:00.000000+00:00", "2025-01-18T10:00:00.000000+00:00", 1, "Main Hall"),
+                 "2025-01-18T09:00:00.000000+00:00", "2025-01-19T23:00:00.000000+00:00", 1, "Main Hall"),
         Activity("Coding Session 1", "First coding session",
                  "2025-01-18T10:00:00.000000+00:00", "2025-01-18T12:00:00.000000+00:00", 1, "Main Hall"),
         Activity("Lunch Break", "Lunch break for participants",
@@ -84,7 +84,7 @@ def create_sample_activities():
                  "2025-01-18T13:00:00.000000+00:00", "2025-01-18T17:00:00.000000+00:00", 1, "Main Hall"),
         # Activities for Tech Conference
         Activity("Keynote Speech", "Opening keynote speech",
-                 "2025-01-19T08:30:00.000000+00:00", "2025-01-19T09:30:00.000000+00:00", 2, "Auditorium"),
+                 "2025-01-19T00:30:00.000000+00:00", "2025-01-19T09:30:00.000000+00:00", 2, "Auditorium"),
         Activity("Panel Discussion", "Discussion with industry experts",
                  "2025-01-19T09:30:00.000000+00:00", "2025-01-19T11:00:00.000000+00:00", 2, "Auditorium"),
         Activity("Networking Session", "Networking with other attendees",

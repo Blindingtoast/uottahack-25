@@ -1,5 +1,4 @@
 from db import db
-from models.ActivityRoom import ActivityRoom
 
 
 class Room(db.Model):

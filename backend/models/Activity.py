@@ -59,3 +59,6 @@ class Activity(db.Model):
     @staticmethod
     def is_registered(activity_id, person_id):
         return ActivityEntry.query.filter_by(activity_id=activity_id, person_id=person_id).first() is not None
+    
+    def room_capacities_remaining(self):
+        return {room: room.get_capacity_information() - ActivityEntry.room_occupancy(self.id, room.id) for room in self.rooms}
