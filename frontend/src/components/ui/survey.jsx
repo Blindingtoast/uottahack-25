@@ -12,6 +12,7 @@ import {
 const SurveyDialog = ({ activityId }) => {
   const [ personId, setPersonId ] = useState(null);
   const [ surveyComplete, setSurveyComplete ] = useState(false);
+  const [ dialogueOpen, setDialogueOpen ] = useState(false);
 
   useEffect(() => {
     fetch("/api/getid", {
@@ -26,7 +27,9 @@ const SurveyDialog = ({ activityId }) => {
     })
     .then((responsejson) => setPersonId(responsejson.person_id))
     .catch((error) => console.error("Error fetching id:", error));
-
+  }, [])
+  useEffect(() => {
+    if (!personId) return;
     let intervalId
     const surveyCompletion = () => {
       fetch(`/api/surveycompletion?activity_id=${activityId}&person_id=${personId}`)
@@ -42,15 +45,17 @@ const SurveyDialog = ({ activityId }) => {
       .catch((error) => console.error("Error:", error));
     }
     surveyCompletion();
-    intervalId = setInterval(surveyCompletion, 2000);
+    const pollingRate = dialogueOpen ? 5000 : 15000
+    intervalId = setInterval(surveyCompletion, pollingRate);
     if (surveyComplete) {
       clearInterval(intervalId);
     }
     return () => clearInterval(intervalId);
-  });
+  }, [dialogueOpen, personId]);
+
   const surveylink = `https://www.surveymonkey.com/r/DVLXTFR?person_id=${personId}&activity_id=${activityId}`
   return (<>
-    <Dialog>
+    <Dialog onOpenChange={(open) => setDialogueOpen(open)}>
       <VisuallyHidden>
         <DialogTitle>SurveyMonkey Link</DialogTitle>
       </VisuallyHidden>
