@@ -125,7 +125,7 @@ const ActivityCard = ({ activity }) => {
         
         <CardContent className="flex flex-col h-full">
           <LiveUpdates activityId={activity.id} className="flex-1 overflow-y" />
-          <SurveyDialog className="flex justify-end"/>
+          <SurveyDialog activityId={activity.id} className="flex justify-end"/>
         </CardContent>
       </div>
     </Card>
