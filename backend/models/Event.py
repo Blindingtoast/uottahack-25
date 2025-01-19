@@ -35,7 +35,8 @@ class Event(db.Model):
             'description': self.description,
             'start_date': self.start_date.strftime('%Y-%m-%dT%H:%M:%S'),
             'end_date': self.end_date.strftime('%Y-%m-%dT%H:%M:%S'),
-            'location': self.location
+            'location': self.location,
+            'activities': len(self.activities)
         }
 
     def add_person(self, person):

@@ -78,13 +78,28 @@ const LiveUpdates = ({ activityId }) => {
 };
 
 const ActivityCard = ({ activity }) => {
-  
+  const [isRegistered, setIsRegistered] = useState(activity.registered);
+
+  const handleRegister = async () => {
+    try {
+      const response = await fetch(`/api/activities/${activity.id}/register`, {
+        method: isRegistered ? "DELETE" : "PUT",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to update registration status");
+      }
+      setIsRegistered(!isRegistered);
+    } catch (err) {
+      console.error("Error updating registration status:", err);
+    }
+  };
+
   return (
     <Card>
       <div className="grid grid-cols-2">
         <div className="border-r">
           <CardHeader>
-            <CardTitle >
+            <CardTitle>
               {activity.name}
             </CardTitle>
             <CardDescription>{activity.description}</CardDescription>
@@ -100,7 +115,7 @@ const ActivityCard = ({ activity }) => {
             <div className="flex items-center text-gray-600">
               <Users className="h-4 w-4 mr-2 flex-shrink-0" />
               <span className="text-sm">
-                {activity.people?.length || 0} attendees
+                {activity.people || 0} attendees
               </span>
             </div>
             <div className="flex items-center text-gray-600">
@@ -121,6 +136,14 @@ const ActivityCard = ({ activity }) => {
                 ))}
               </div>
             )}
+            <button
+              onClick={handleRegister}
+              className={`mt-4 px-4 py-2 text-sm font-semibold rounded ${
+                isRegistered ? "bg-red-500 text-white" : "bg-green-500 text-white"
+              }`}
+            >
+              {isRegistered ? "Unregister" : "Register"}
+            </button>
           </CardContent>
         </div>
         
