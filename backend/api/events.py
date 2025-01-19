@@ -1,3 +1,4 @@
+from models.ActivityEntry import ActivityEntry
 from models.Event import Event
 from models.Activity import Activity
 from flask import Blueprint, request, jsonify
@@ -67,9 +68,27 @@ def get_event(event_id):
 def get_activities(event_id):
     event = Event.query.filter_by(id=event_id).first()
     if event:
-        return jsonify([activity.to_json() for activity in event.activities])
+        activities = [activity.to_json() for activity in event.activities]
+        for activity in activities:
+            activity["registered"] = Activity.is_registered(activity["id"], get_jwt_identity())
+        return jsonify(activities)                      
     else:
         return jsonify({"error": "Event not found"}), 404
+    
+# endpoint for registering for an activity
+@events.route("/activities/<int:activity_id>/register", methods=["PUT", "DELETE"])
+@jwt_required()
+def register_activity(activity_id):
+    if request.method == "PUT":
+        activity = Activity.query.filter_by(id=activity_id).first()
+        person = People.query.filter_by(id=get_jwt_identity()).first()
+        ActivityEntry.register(activity.id, person.id)
+        return jsonify({"msg": "Registered successfully"})
+    elif request.method == "DELETE":
+        activity = Activity.query.filter_by(id=activity_id).first()
+        person = People.query.filter_by(id=get_jwt_identity()).first()
+        ActivityEntry.unregister(activity.id, person.id)
+        return jsonify({"msg": "Unregistered successfully"})
 
 
 @events.route("/events/<int:event_id>/create", methods=["POST"])

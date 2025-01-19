@@ -52,3 +52,9 @@ def check():
 def get_person_id():
     person_id = get_jwt_identity()
     return jsonify({"person_id": person_id})
+
+@accounts.route("/account", methods=["GET"])
+@jwt_required()
+def get_account():
+    person = People.query.filter_by(id=get_jwt_identity()).first()
+    return jsonify(person.to_json())

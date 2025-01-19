@@ -1,8 +1,9 @@
 from db import db
+from models.ActivityRoom import ActivityRoom
 
 
 class Room(db.Model):
-    __tablename__ = 'rooms'
+    __tablename__ = 'Room'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -11,6 +12,7 @@ class Room(db.Model):
     owner = db.Column(db.Integer, db.ForeignKey('People.id'), nullable=False)
     ingress = db.Column(db.Integer, nullable=False)
     egress = db.Column(db.Integer, nullable=False)
+    activities = db.relationship('ActivityRoom', backref='Room', lazy=True)
 
     def __init__(self, name, description, capacity, owner):
         self.name = name
