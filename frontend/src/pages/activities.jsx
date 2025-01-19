@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Calendar, Clock, Users, MapPin, ChevronRight } from "lucide-react";
+import { Calendar, Clock, Users, MapPin } from "lucide-react";
 import { format } from "date-fns";
 
 const ActivitiesPage = () => {
@@ -80,7 +80,6 @@ const ActivitiesPage = () => {
             onClick={() => navigate(`/activities/${activity.id}`)}
             className="text-blue-600 hover:text-blue-700"
           >
-            <ChevronRight className="h-6 w-6" />
           </button>
         </div>
       </CardHeader>
@@ -138,7 +137,7 @@ const ActivitiesPage = () => {
           <CardContent>
             <p>{error}</p>
             <button
-              onClick={() => navigate("/events")}
+              onClick={() => navigate(-1)}
               className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
             >
               Return to Events
@@ -159,7 +158,7 @@ const ActivitiesPage = () => {
           <CardContent>
             <p>The requested event could not be found.</p>
             <button
-              onClick={() => navigate("/events")}
+              onClick={() => navigate(-1)}
               className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
             >
               Return to Events
@@ -209,6 +208,9 @@ const ActivitiesPage = () => {
 
         <div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Activities</h2>
+          <button onClick={() => navigate("./create")} className="bg-blue-500 text-white py-3 rounded-md w-auto px-6 mb-4">
+            Create an Activity
+          </button>
           <p className="text-gray-600 mb-6">
             Browse all activities for this event
           </p>

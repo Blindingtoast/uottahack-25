@@ -1,4 +1,5 @@
 from models.Event import Event
+from models.Activity import Activity
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
@@ -9,8 +10,8 @@ from models.EventEntry import EventEntry
 events = Blueprint("events", __name__)
 
 
-@jwt_required()
 @events.route("/events/create", methods=["POST"])
+@jwt_required()
 def create_event():
     data = request.get_json()
     name = data.get("name")
@@ -28,7 +29,11 @@ def create_event():
 @events.route("/events/all", methods=["GET"])
 @jwt_required()
 def get_events():
-    joined_event_ids = db.session.query(EventEntry.event_id).filter(EventEntry.person_id == get_jwt_identity()).subquery()
+    joined_event_ids = (
+        db.session.query(EventEntry.event_id)
+        .filter(EventEntry.person_id == get_jwt_identity())
+        .subquery()
+    )
     events = Event.query.filter(Event.id.notin_(joined_event_ids)).all()
     return jsonify([event.to_json() for event in events])
 
@@ -36,8 +41,13 @@ def get_events():
 @events.route("/events/joined", methods=["GET"])
 @jwt_required()
 def get_joined_events():
-    events = Event.query.join(EventEntry).filter(EventEntry.person_id == get_jwt_identity()).all()
+    events = (
+        Event.query.join(EventEntry)
+        .filter(EventEntry.person_id == get_jwt_identity())
+        .all()
+    )
     return jsonify([event.to_json() for event in events])
+
 
 @events.route("/events/<int:event_id>", methods=["GET"])
 @jwt_required()
@@ -61,6 +71,23 @@ def get_activities(event_id):
     else:
         return jsonify({"error": "Event not found"}), 404
 
+
+@events.route("/events/<int:event_id>/create", methods=["POST"])
+@jwt_required()
+def create_activity(event_id):
+    data = request.get_json()
+    name = data.get("name")
+    start_time = data.get("start_date")
+    end_time = data.get("end_date")
+    description = data.get("description")
+    rooms = data.get("rooms")
+    activity = Activity(name, description, start_time, end_time, event_id, rooms)
+    db.session.add(activity)
+    db.session.commit()
+
+    return jsonify({"msg": "Activity created successfully", "name": name})
+
+
 @events.route("/events/<int:event_id>/register", methods=["PUT", "DELETE"])
 @jwt_required()
 def register_event(event_id):
@@ -74,4 +101,3 @@ def register_event(event_id):
         person = People.query.filter_by(id=get_jwt_identity()).first()
         EventEntry.unregister(event.id, person.id)
         return jsonify({"msg": "Unregistered successfully"})
-    

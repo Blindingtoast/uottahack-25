@@ -5,6 +5,7 @@ import AuthPage from '@/pages/auth.jsx'
 import EventsPage from '@/pages/events.jsx'
 import ActivitiesPage from '@/pages/activities'
 import CreateEventPage from './pages/create_event'
+import CreateActivityPage from "@/pages/create_activity"
 
 
 import { StrictMode } from 'react'
@@ -21,6 +22,7 @@ createRoot(document.getElementById('root')).render(
       <Route path="/events" element={<EventsPage />} />
       <Route path="/events/:eventId" element={<ActivitiesPage />} />
       <Route path="/events/create" element={<CreateEventPage />} />
+      <Route path="/events/:eventId/create" element={<CreateActivityPage />} />
     </Routes> 
   </Router>
 );
