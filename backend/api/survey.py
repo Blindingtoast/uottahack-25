@@ -26,16 +26,15 @@ def check_request_status():
         )
         current_app.logger.info(f"got back from surveymonkey: {response}")
 
-    return get_completion_status(activity_id, person_id)
+    return get_completion_status(activity_id, person_id, current_app.logger)
 
 
-def get_completion_status(activity_id, person_id):
-    if (
-        PersonActivitySurvey.query.filter_by(
-            person_id=person_id, activity_id=activity_id
-        )
-        is not None
-    ):
+def get_completion_status(activity_id, person_id, logger):
+    query_count = PersonActivitySurvey.query.filter_by(
+        person_id=person_id, activity_id=activity_id
+    ).count()
+    if query_count != 0:
+        logger.info(f"query count {query_count}")
         return {"completed": "complete"}
     else:
         return {"completed": "incomplete"}
