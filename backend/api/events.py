@@ -9,8 +9,8 @@ from models.EventEntry import EventEntry
 events = Blueprint("events", __name__)
 
 
-@jwt_required()
 @events.route("/events/create", methods=["POST"])
+@jwt_required()
 def create_event():
     data = request.get_json()
     name = data.get("name")
@@ -18,7 +18,7 @@ def create_event():
     end_time = data.get("end_date")
     description = data.get("description")
     location = data.get("location")
-    event = Event(name, description, start_time, end_time, location)
+    event = Event(name, description, start_time, end_time, location, get_jwt_identity())
     db.session.add(event)
     db.session.commit()
 
@@ -75,3 +75,9 @@ def register_event(event_id):
         EventEntry.unregister(event.id, person.id)
         return jsonify({"msg": "Unregistered successfully"})
     
+
+@events.route("/events/owned", methods=["GET"])
+@jwt_required()
+def get_owned_events():
+    events = Event.query.filter_by(owner=get_jwt_identity()).all()
+    return jsonify([event.to_json() for event in events])
