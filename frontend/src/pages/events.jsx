@@ -33,7 +33,7 @@ const EventsPage = () => {
           start_date: new Date(event.start_date),
           end_date: new Date(event.end_date),
           location: event.location,
-          activities: 0,
+          activities: event.activities,
         }));
         setJoinedEvents(formattedEvents);
         console.log("Fetched joined events:", formattedEvents);
@@ -63,7 +63,7 @@ const EventsPage = () => {
           start_date: new Date(event.start_date),
           end_date: new Date(event.end_date),
           location: event.location,
-          activities: 0,
+          activities: event.activities,
         }));
         setNearbyEvents(formattedEvents);
         console.log("Fetched events:", formattedEvents);

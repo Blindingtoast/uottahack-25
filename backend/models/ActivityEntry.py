@@ -52,4 +52,18 @@ class ActivityEntry(db.Model):
             non_priority_people = ActivityEntry.query.filter_by(activity_id=activity_id, has_entered=0, is_priority=0).order_by(func.random()).limit(capacity - len(priority_people)).all()
             return priority_people + non_priority_people
         return priority_people
+    
+    @staticmethod
+    def register(activity_id, person_id):
+        activity_entry = ActivityEntry(activity_id, person_id)
+        db.session.add(activity_entry)
+        db.session.commit()
+        return activity_entry
+    
+    @staticmethod
+    def unregister(activity_id, person_id):
+        activity_entry = ActivityEntry.query.filter_by(activity_id=activity_id, person_id=person_id).first()
+        db.session.delete(activity_entry)
+        db.session.commit()
+        return activity_entry
         

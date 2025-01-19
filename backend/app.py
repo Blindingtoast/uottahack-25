@@ -8,6 +8,7 @@ from db import db
 
 from models.ActivityEntry import ActivityEntry
 from models.EventEntry import EventEntry
+from functions.SampleDataCreator import create_sample
 
 mimetypes.add_type('application/javascript', '.js')
 
@@ -30,7 +31,7 @@ jwt = JWTManager(app)
 
 app.register_blueprint(api_bp)
 
-# Flask serves the whole project for the production build, might be better to 
+# Flask serves the whole project for the production build, might be better to
 # use NGINX
 
 
@@ -47,10 +48,15 @@ def serve_static(path):
 
 
 # create db
+flag = False
+if not os.path.exists('instance/db.sqlite'):
+    flag = True
 
 db.init_app(app)
 with app.app_context():
     db.create_all()
+    if flag:
+        create_sample()
 
 if __name__ == '__main__':
     app.run(debug=True)

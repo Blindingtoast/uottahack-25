@@ -1,4 +1,5 @@
 from datetime import datetime
+from models.ActivityEntry import ActivityEntry
 from db import db
 
 
@@ -48,4 +49,9 @@ class Activity(db.Model):
             "start_time": self.start_time.strftime("%Y-%m-%dT%H:%M:%S.%f%z"),
             "end_time": self.end_time.strftime("%Y-%m-%dT%H:%M:%S.%f%z"),
             "event_id": self.event,
+            "people": len(self.people)
         }
+
+    @staticmethod
+    def is_registered(activity_id, person_id):
+        return ActivityEntry.query.filter_by(activity_id=activity_id, person_id=person_id).first() is not None
