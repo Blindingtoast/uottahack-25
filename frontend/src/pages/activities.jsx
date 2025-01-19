@@ -155,6 +155,12 @@ const ActivitiesPage = () => {
                 onClick={() => navigate("./create")}>
                 Create an Activity
               </button>
+              <button className="items-center px-4 py-2 mx-2 bg-blue-500 text-white rounded"
+                onClick={() => {
+                  fetch("/api/devapi/demo")
+                }}>
+                Play Demo
+              </button>
             </div>
           </div>
         </div>

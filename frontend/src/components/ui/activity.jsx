@@ -29,7 +29,7 @@ const LiveUpdates = ({ activityId }) => {
     };
 
     fetchUpdates();
-    const interval = setInterval(fetchUpdates, 30000);
+    const interval = setInterval(fetchUpdates, 2000);
 
     return () => clearInterval(interval);
   }, [activityId]);

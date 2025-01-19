@@ -1,9 +1,9 @@
 from models.ActivityEntry import ActivityEntry
+from models.PersonActivityMessage import PersonActivityMessage
 from models.Event import Event
 from models.Activity import Activity
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
-
 from db import db
 from models.People import People
 from models.EventEntry import EventEntry
@@ -70,11 +70,14 @@ def get_activities(event_id):
     if event:
         activities = [activity.to_json() for activity in event.activities]
         for activity in activities:
-            activity["registered"] = Activity.is_registered(activity["id"], get_jwt_identity())
-        return jsonify(activities)                      
+            activity["registered"] = Activity.is_registered(
+                activity["id"], get_jwt_identity()
+            )
+        return jsonify(activities)
     else:
         return jsonify({"error": "Event not found"}), 404
-    
+
+
 # endpoint for registering for an activity
 @events.route("/activities/<int:activity_id>/register", methods=["PUT", "DELETE"])
 @jwt_required()
@@ -120,6 +123,28 @@ def register_event(event_id):
         person = People.query.filter_by(id=get_jwt_identity()).first()
         EventEntry.unregister(event.id, person.id)
         return jsonify({"msg": "Unregistered successfully"})
+
+
+@events.route("/activities/<int:activity_id>/updates")
+@jwt_required()
+def activity_updates(activity_id):
+    messages = (
+        PersonActivityMessage.query.filter_by(activity_id=activity_id)
+        .order_by(PersonActivityMessage.id.desc())  # Fetch the latest updates first
+        .all()
+    )
+    if messages is not None:
+        current_app.logger.info(f"sending updates for messages: {messages}")
+    updates = [
+        {
+            "id": message.id,
+            "message": message.message,
+            "timestamp": message.timestamp,
+        }
+        for message in messages
+    ]
+    return updates
+
 
 @events.route("/events/owned", methods=["GET"])
 @jwt_required()
