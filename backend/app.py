@@ -6,9 +6,8 @@ from flask import Flask, send_from_directory, render_template
 from flask_jwt_extended import JWTManager
 from db import db
 
-from models.ActivityEntry import ActivityEntry
-from models.EventEntry import EventEntry
 from functions.SampleDataCreator import create_sample
+from functions.Scheduler import start_scheduler
 
 mimetypes.add_type('application/javascript', '.js')
 
@@ -57,6 +56,8 @@ with app.app_context():
     db.create_all()
     if flag:
         create_sample()
+
+#start_scheduler(app)
 
 if __name__ == '__main__':
     app.run(debug=True)
