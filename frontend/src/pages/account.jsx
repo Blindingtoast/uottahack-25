@@ -2,16 +2,20 @@ import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import { AttendeeQRCode } from '@/components/ui/attendeeqr'
+import { useNavigate } from "react-router-dom";
 
 const AccountPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userData, setUserData] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchAccountData = async () => {
       try {
         const response = await fetch("/api/account");
+        if (response.status === 401) {
+          navigate("/login");
+        }
         if (!response.ok) {
           throw new Error("Failed to fetch account data");
         }

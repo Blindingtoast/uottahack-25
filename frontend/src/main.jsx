@@ -1,5 +1,4 @@
 import '@/index.css'
-import App from '@/App.jsx'
 import Scanner from '@/pages/scanner.jsx'
 import AuthPage from '@/pages/auth.jsx'
 import EventsPage from '@/pages/events.jsx'
@@ -21,7 +20,7 @@ createRoot(document.getElementById('root')).render(
   <Router>
     <NavBar />
     <Routes>
-      <Route path="/" element={<App />} />
+      <Route path="/" element={<AccountPage />} />
       <Route path="/scanner/:activityId" element={<Scanner />} />
       <Route path="/login" element={<AuthPage />} />
       <Route path="/register" element={<AuthPage />} />

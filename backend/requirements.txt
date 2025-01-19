@@ -3,5 +3,5 @@ gunicorn
 flask_sqlalchemy
 schedule
 flask_jwt_extended
-dotenv
+python-dotenv
 requests

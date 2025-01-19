@@ -63,7 +63,7 @@ const SurveyDialog = ({ activityId }) => {
             : "bg-blue-500 text-white hover:bg-blue-600"
           }`}
         >
-          {surveyComplete ? "Priority Bumped. Thank you!" : "Answer a quick survey for priority"}
+          {surveyComplete ? "Priority Bumped. Thank you!" : "Answer a quick survey for priority queue"}
         </button>
       </DialogTrigger>
       <DialogContent className="w-11/12 max-w-4xl h-[90vh] overflow-y-auto flex flex-col">

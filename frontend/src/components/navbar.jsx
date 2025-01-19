@@ -18,25 +18,13 @@ const NavBar = () => {
           </div>
           <div className="flex space-x-4">
             <Link
-              to="/"
+              to="/events"
               className="text-gray-900 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
             >
-              Home
+              Events
             </Link>
             <Link
-              to="/about"
-              className="text-gray-900 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
-            >
-              About
-            </Link>
-            <Link
-              to="/contact"
-              className="text-gray-900 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
-            >
-              Contact
-            </Link>
-            <Link
-              to="/auth"
+              to="/account"
               className="text-gray-900 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
             >
               My Account
