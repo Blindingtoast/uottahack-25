@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify, current_app
 import requests
 import time
+from models.PersonActivitySurvey import PersonActivitySurvey
+from db import db
 
 survey = Blueprint("survey", __name__)
 
@@ -9,6 +11,7 @@ last_update_time = time.time()
 
 @survey.route("/surveycompletion", methods=["GET"])
 def check_request_status():
+    global last_update_time
     activity_id = request.args.get("activity_id")
     person_id = request.args.get("person_id")
 
@@ -16,24 +19,42 @@ def check_request_status():
         return jsonify({"error": "Missing activity_id or person_id"}), 400
 
     current_time = time.time()
-    if current_time - last_action_time >= 10:
-        last_action_time = current_time
-        get_updates(current_app["COLLECTOR_ID"], current_app["ACCESS_TOKEN"])
+    if current_time - last_update_time >= 10:
+        last_update_time = current_time
+        response = get_updates(
+            current_app.config["COLLECTOR_ID"], current_app.config["ACCESS_TOKEN"]
+        )
+        current_app.logger.info(f"got back from surveymonkey: {response}")
 
-    return get_completion_status(activity_id, person_id)
+    return get_completion_status(activity_id, person_id, current_app.logger)
 
 
-def get_completion_status(activity_id, person_id):
-    return {"completed": "incomplete"}
+def get_completion_status(activity_id, person_id, logger):
+    query_count = PersonActivitySurvey.query.filter_by(
+        person_id=person_id, activity_id=activity_id
+    ).count()
+    if query_count != 0:
+        logger.info(f"query count {query_count}")
+        return {"completed": "complete"}
+    else:
+        return {"completed": "incomplete"}
 
 
 def get_updates(collector_id, access_token, query_params=None):
-    base_url = f"https://api.surveymonkey.com/v3/collectors/{collector_id}/responses"
+    base_url = (
+        f"https://api.surveymonkey.com/v3/collectors/{collector_id}/responses/bulk"
+    )
     headers = {"Accept": "application/json", "Authorization": f"Bearer {access_token}"}
     try:
         response = requests.get(base_url, headers=headers, params=query_params)
-        response.raise_for_status()  # Raise an error for bad status codes
-        return response.json()  # Return the JSON response
+        response.raise_for_status()
+        for entry in response.json()["data"]:
+            person_id = entry["custom_variables"]["person_id"]
+            activity_id = entry["custom_variables"]["person_id"]
+            db.session.merge(PersonActivitySurvey(person_id, activity_id, "completed"))
+        db.session.commit()
+        return response.json()
+
     except requests.exceptions.RequestException as e:
         print(f"Error making API request: {e}")
         return None

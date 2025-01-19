@@ -6,6 +6,7 @@ from models.Room import Room
 
 rooms = Blueprint("rooms", __name__)
 
+
 @rooms.route("/rooms/create", methods=["POST"])
 @jwt_required()
 def create_room():
@@ -19,12 +20,14 @@ def create_room():
 
     return jsonify({"msg": "Room created successfully", "id": room.id})
 
+
 @rooms.route("/rooms/all", methods=["GET"])
 @jwt_required()
 def get_rooms():
     rooms = Room.query.filter_by(owner=get_jwt_identity()).all()
     return jsonify([room.to_json() for room in rooms])
-    
+
+
 @rooms.route("/rooms/<int:room_id>", methods=["GET", "PUT", "DELETE"])
 @jwt_required()
 def edit_room(room_id):

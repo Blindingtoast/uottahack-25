@@ -10,33 +10,21 @@ const NavBar = () => {
             <Link to="/events" className="flex items-center">
               <img
                 src="/LineLess_Logo_NoBG.png"
-                alt="LineLess Logo"
+                alt="FeedForward Logo"
                 className="h-8 w-8 mr-2"
               />
-              <span className="text-xl font-bold text-gray-900">LineLess</span>
+              <span className="text-xl font-bold text-gray-900">FeedForward</span>
             </Link>
           </div>
           <div className="flex space-x-4">
             <Link
-              to="/"
+              to="/events"
               className="text-gray-900 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
             >
-              Home
+              Events
             </Link>
             <Link
-              to="/about"
-              className="text-gray-900 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
-            >
-              About
-            </Link>
-            <Link
-              to="/contact"
-              className="text-gray-900 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
-            >
-              Contact
-            </Link>
-            <Link
-              to="/auth"
+              to="/account"
               className="text-gray-900 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
             >
               My Account

@@ -12,6 +12,7 @@ import {
 const SurveyDialog = ({ activityId }) => {
   const [ personId, setPersonId ] = useState(null);
   const [ surveyComplete, setSurveyComplete ] = useState(false);
+  const [ dialogueOpen, setDialogueOpen ] = useState(false);
 
   useEffect(() => {
     fetch("/api/getid", {
@@ -26,14 +27,16 @@ const SurveyDialog = ({ activityId }) => {
     })
     .then((responsejson) => setPersonId(responsejson.person_id))
     .catch((error) => console.error("Error fetching id:", error));
-
+  }, [])
+  useEffect(() => {
+    if (!personId) return;
     let intervalId
     const surveyCompletion = () => {
       fetch(`/api/surveycompletion?activity_id=${activityId}&person_id=${personId}`)
       .then((response) => response.json())
       .then((responsejson) => {
         if (responsejson.completed === "complete") {
-          setSurveyComplete(true);  
+          setSurveyComplete(true);
           if (intervalId) {
             clearInterval(intervalId)
           }
@@ -42,15 +45,17 @@ const SurveyDialog = ({ activityId }) => {
       .catch((error) => console.error("Error:", error));
     }
     surveyCompletion();
-    intervalId = setInterval(surveyCompletion, 2000);
+    const pollingRate = dialogueOpen ? 2000 : 7000
+    intervalId = setInterval(surveyCompletion, pollingRate);
     if (surveyComplete) {
       clearInterval(intervalId);
     }
     return () => clearInterval(intervalId);
-  });
+  }, [dialogueOpen, personId]);
+
   const surveylink = `https://www.surveymonkey.com/r/DVLXTFR?person_id=${personId}&activity_id=${activityId}`
   return (<>
-    <Dialog>
+    <Dialog onOpenChange={(open) => setDialogueOpen(open)}>
       <VisuallyHidden>
         <DialogTitle>SurveyMonkey Link</DialogTitle>
       </VisuallyHidden>
@@ -60,16 +65,16 @@ const SurveyDialog = ({ activityId }) => {
           className={`items-center px-4 py-2 mx-2 rounded ${
             surveyComplete
             ? "bg-gray-400 text-gray-600"
-            : "bg-blue-500 text-white hover:bg-blue-600"
+            : "bg-blue-500 text-white"
           }`}
         >
-          {surveyComplete ? "Priority Bumped. Thank you!" : "Answer a quick survey for priority"}
+          {surveyComplete ? "Priority Bumped. Thank you!" : "Answer a quick survey for priority queue"}
         </button>
       </DialogTrigger>
       <DialogContent className="w-11/12 max-w-4xl h-[90vh] overflow-y-auto flex flex-col">
         <iframe
           src={surveylink}
-          className="flex-1 w-full h-full border-0 pt-5" 
+          className="flex-1 w-full h-full border-0 pt-5"
           title="Survey Link"
         ></iframe>
         {surveyComplete && (
