@@ -10,6 +10,8 @@ import NavBar from './components/navbar'
 import CreateRoomPage from './pages/create_room'
 import RoomDetailsPage from './pages/view_room'
 import RoomsPage from './pages/rooms'
+import ScannerPage from './pages/scanner_page'
+import AccountPage from './pages/account'
 
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -30,6 +32,8 @@ createRoot(document.getElementById('root')).render(
       <Route path="/rooms/create" element={<CreateRoomPage />} />
       <Route path="/rooms/:roomId" element={<RoomDetailsPage />} />
       <Route path="/rooms" element={<RoomsPage />} />
+      <Route path="/scanner" element={<ScannerPage />} />
+      <Route path="/account" element={<AccountPage />} />
     </Routes> 
   </Router>
 );

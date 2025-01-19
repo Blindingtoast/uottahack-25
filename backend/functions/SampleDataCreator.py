@@ -6,6 +6,7 @@ from models.Room import Room
 from models.ActivityEntry import ActivityEntry
 from models.EventEntry import EventEntry
 from models.Event import Event
+from models.ActivityRoom import ActivityRoom
 
 
 def create_sample_people():
@@ -246,6 +247,33 @@ def create_sample_event_entries():
 
     db.session.commit()
 
+def create_sample_activity_rooms():
+    sample_activity_rooms = [
+        ActivityRoom(1, 1),
+        ActivityRoom(1, 2),
+        ActivityRoom(2, 1),
+        ActivityRoom(3, 1),
+        ActivityRoom(3, 2),
+        ActivityRoom(4, 1),
+        ActivityRoom(5, 1),
+        ActivityRoom(5, 2),
+        ActivityRoom(6, 1),
+        ActivityRoom(6, 2),
+        ActivityRoom(7, 1),
+        ActivityRoom(7, 2),
+        ActivityRoom(8, 1),
+        ActivityRoom(8, 2),
+        ActivityRoom(9, 1),
+        ActivityRoom(9, 2),
+        ActivityRoom(10, 1),
+        ActivityRoom(10, 2)
+    ]
+
+    for activity_room in sample_activity_rooms:
+        db.session.add(activity_room)
+
+    db.session.commit()
+
 def create_sample():
     create_sample_people()
     create_sample_events()
@@ -253,3 +281,4 @@ def create_sample():
     create_sample_activities()
     create_sample_activity_entries()
     create_sample_event_entries()
+    create_sample_activity_rooms()
