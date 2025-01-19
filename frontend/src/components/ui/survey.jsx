@@ -37,7 +37,7 @@ const SurveyDialog = ({ activityId }) => {
       })
       .catch((error) => console.error("Error:", error));
     }
-
+    surveyCompletion();
     const intervalId = setInterval(surveyCompletion, 2000);
     return () => clearInterval(intervalId);
   });

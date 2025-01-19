@@ -37,10 +37,9 @@ const LiveUpdates = ({ activityId }) => {
   const visibleUpdates = isExpanded ? updates : updates.slice(0, 3);
 
   return (
-    <Card className="h-full border-0 shadow-none">
-      <CardHeader className="px-0 pt-0">
-        <div className="flex justify-between items-center">
-          <CardTitle className="text-sm font-semibold text-gray-700">
+    <>
+      <CardHeader>
+          <CardTitle>
             Live Updates
           </CardTitle>
           {updates.length > 3 && (
@@ -51,9 +50,8 @@ const LiveUpdates = ({ activityId }) => {
               {isExpanded ? "Show less" : `Show all (${updates.length})`}
             </button>
           )}
-        </div>
       </CardHeader>
-      <CardContent className="px-0 pb-0">
+      <CardContent className="space-y-4">
         {updates.length > 0 ? (
           <div className="space-y-3 max-h-[300px] overflow-y-auto pr-2">
             {visibleUpdates.map((update) => (
@@ -73,7 +71,7 @@ const LiveUpdates = ({ activityId }) => {
           </div>
         )}
       </CardContent>
-    </Card>
+    </>
   );
 };
 
@@ -124,8 +122,12 @@ const ActivityCard = ({ activity }) => {
         </div>
         
         <CardContent className="flex flex-col h-full">
-          <LiveUpdates activityId={activity.id} className="flex-1 overflow-y" />
-          <SurveyDialog activityId={activity.id} className="flex justify-end"/>
+          <div className="flex-1 overflow-y" >
+            <LiveUpdates activityId={activity.id} />
+          </div>
+          <div className="justify-end">
+            <SurveyDialog activityId={activity.id} />
+          </div>
         </CardContent>
       </div>
     </Card>
