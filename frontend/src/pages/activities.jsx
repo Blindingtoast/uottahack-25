@@ -8,8 +8,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Calendar, Clock, Users, MapPin } from "lucide-react";
+import { Calendar, MapPin } from "lucide-react";
 import { format } from "date-fns";
+import { ActivityCard } from "@/components/ui/activity"
 
 const ActivitiesPage = () => {
   const { eventId } = useParams();
@@ -23,7 +24,6 @@ const ActivitiesPage = () => {
     const fetchEventData = async () => {
       setLoading(true);
       try {
-        // Replace with your actual API endpoints
         const [eventResponse, activitiesResponse] = await Promise.all([
           fetch(`/api/events/${eventId}`),
           fetch(`/api/events/${eventId}/activities`),
@@ -67,57 +67,6 @@ const ActivitiesPage = () => {
       console.error('Error updating registration status:', err);
     }
   };
-
-  const ActivityCard = ({ activity }) => (
-    <Card className="hover:shadow-lg transition-shadow">
-      <CardHeader>
-        <div className="flex justify-between items-start">
-          <div>
-            <CardTitle>{activity.name}</CardTitle>
-            <CardDescription>{activity.description}</CardDescription>
-          </div>
-          <button
-            onClick={() => navigate(`/activities/${activity.id}`)}
-            className="text-blue-600 hover:text-blue-700"
-          >
-          </button>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-3">
-          <div className="flex items-center text-gray-600">
-            <Clock className="h-4 w-4 mr-2" />
-            <span className="text-sm">
-              {format(new Date(activity.start_time), "h:mm a")} -{" "}
-              {format(new Date(activity.end_time), "h:mm a")}
-            </span>
-          </div>
-          <div className="flex items-center text-gray-600">
-            <Users className="h-4 w-4 mr-2" />
-            <span className="text-sm">
-              {activity.people?.length || 0} attendees
-            </span>
-          </div>
-          <div className="flex items-center text-gray-600">
-            <Calendar className="h-4 w-4 mr-2" />
-            <span className="text-sm">
-              {format(new Date(activity.start_time), "MMMM d, yyyy")}
-            </span>
-          </div>
-          <div className="flex flex-wrap gap-2 mt-2">
-            {activity.rooms?.map((room, index) => (
-              <span
-                key={index}
-                className="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded"
-              >
-                {room.name || room}
-              </span>
-            ))}
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
 
   if (loading) {
     return (
@@ -170,59 +119,78 @@ const ActivitiesPage = () => {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-lg p-6 mb-8 shadow-sm">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            {eventData.name}
-          </h1>
-          <p className="text-gray-600 mb-4">{eventData.description}</p>
-          <div className="flex flex-wrap gap-4">
-            <div className="flex items-center text-gray-600">
-              <Calendar className="h-5 w-5 mr-2" />
-              <span>
-                {format(new Date(eventData.start_date), "MMM d")} -{" "}
-                {format(new Date(eventData.end_date), "MMM d, yyyy")}
-              </span>
-            </div>
-            <div className="flex items-center text-gray-600">
-              <MapPin className="h-5 w-5 mr-2" />
-              <span>{eventData.location}</span>
-            </div>
-            <div className="ml-auto">
-              <button className="flex items-center px-4 py-2 bg-blue-500 text-white rounded"
-                onClick={handleRegistrationToggle}>
-                {eventData.registered ? (
-                  <>
-                    Leave Event <span className="ml-2">-</span>
-                  </>
-                ) : (
-                  <>
-                    Join Event <span className="ml-2">+</span>
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
+        <Card className="mb-8">
+          <CardContent className="p-6">
+            <div className="flex flex-col gap-4">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                    {eventData.name}
+                  </h1>
+                  <p className="text-gray-600 max-w-2xl">
+                    {eventData.description}
+                  </p>
+                </div>
+                <button 
+                  className="flex items-center px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                  onClick={handleRegistrationToggle}
+                >
+                  {eventData.registered ? (
+                    <>
+                      Leave Event <span className="ml-2">-</span>
+                    </>
+                  ) : (
+                    <>
+                      Join Event <span className="ml-2">+</span>
+                    </>
+                  )}
+                </button>
+              </div>
 
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Activities</h2>
-          <button onClick={() => navigate("./create")} className="bg-blue-500 text-white py-3 rounded-md w-auto px-6 mb-4">
-            Create an Activity
-          </button>
-          <p className="text-gray-600 mb-6">
-            Browse all activities for this event
-          </p>
+              <div className="flex flex-wrap gap-6">
+                <div className="flex items-center text-gray-600">
+                  <Calendar className="h-5 w-5 mr-2" />
+                  <span>
+                    {format(new Date(eventData.start_date), "MMM d")} -{" "}
+                    {format(new Date(eventData.end_date), "MMM d, yyyy")}
+                  </span>
+                </div>
+                <div className="flex items-center text-gray-600">
+                  <MapPin className="h-5 w-5 mr-2" />
+                  <span>{eventData.location}</span>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="mb-8">
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-1">Activities</h2>
+              <p className="text-gray-600">
+                Browse and join activities for this event
+              </p>
+            </div>
+            <button 
+              onClick={() => navigate("./create")} 
+              className="bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600 transition-colors"
+            >
+              Create Activity
+            </button>
+          </div>
+
           {activities.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-6">
               {activities.map((activity) => (
                 <ActivityCard key={activity.id} activity={activity} />
               ))}
             </div>
           ) : (
             <Card>
-              <CardContent className="py-8">
+              <CardContent className="py-12">
                 <p className="text-center text-gray-600">
                   No activities found for this event.
                 </p>
