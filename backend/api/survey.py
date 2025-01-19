@@ -22,7 +22,9 @@ def check_request_status():
     if current_time - last_update_time >= 10:
         last_update_time = current_time
         response = get_updates(
-            current_app.config["COLLECTOR_ID"], current_app.config["ACCESS_TOKEN"]
+            current_app.config["COLLECTOR_ID"],
+            current_app.config["ACCESS_TOKEN"],
+            current_app.logger,
         )
         current_app.logger.info(f"got back from surveymonkey: {response}")
 
@@ -34,13 +36,12 @@ def get_completion_status(activity_id, person_id, logger):
         person_id=person_id, activity_id=activity_id
     ).count()
     if query_count != 0:
-        logger.info(f"query count {query_count}")
         return {"completed": "complete"}
     else:
         return {"completed": "incomplete"}
 
 
-def get_updates(collector_id, access_token, query_params=None):
+def get_updates(collector_id, access_token, logger, query_params=None):
     base_url = (
         f"https://api.surveymonkey.com/v3/collectors/{collector_id}/responses/bulk"
     )
@@ -50,7 +51,10 @@ def get_updates(collector_id, access_token, query_params=None):
         response.raise_for_status()
         for entry in response.json()["data"]:
             person_id = entry["custom_variables"]["person_id"]
-            activity_id = entry["custom_variables"]["person_id"]
+            activity_id = entry["custom_variables"]["activity_id"]
+            logger.info(
+                f"unpacked from surveymonkey request person and activity id {person_id}, {activity_id}"
+            )
             db.session.merge(PersonActivitySurvey(person_id, activity_id, "completed"))
         db.session.commit()
         return response.json()
