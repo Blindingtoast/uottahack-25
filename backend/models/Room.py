@@ -8,13 +8,15 @@ class Room(db.Model):
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(255), nullable=True)
     capacity = db.Column(db.Integer, nullable=False)
+    owner = db.Column(db.Integer, db.ForeignKey('People.id'), nullable=False)
     ingress = db.Column(db.Integer, nullable=False)
     egress = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, name, description, capacity):
+    def __init__(self, name, description, capacity, owner):
         self.name = name
         self.description = description
         self.capacity = capacity
+        self.owner = owner
         self.ingress = 0
         self.egress = 0
 
@@ -29,3 +31,14 @@ class Room(db.Model):
     
     def get_capacity_information(self):
         return {'ingress': self.ingress, 'egress': self.egress, 'capacity': self.capacity}
+    
+    def to_json(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'capacity': self.capacity,
+            'owner': self.owner,
+            'ingress': self.ingress,
+            'egress': self.egress
+        }

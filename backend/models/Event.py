@@ -14,13 +14,15 @@ class Event(db.Model):
     location = db.Column(db.String(100), nullable=False)
     people = db.relationship('EventEntry', backref='Event', lazy=True)
     activities = db.relationship('Activity', backref='Event', lazy=True)
+    owner = db.Column(db.Integer, db.ForeignKey('People.id'), nullable=False)
 
-    def __init__(self, name, description, start_date, end_date, location):
+    def __init__(self, name, description, start_date, end_date, location, owner):
         self.name = name
         self.description = description
         self.start_date = datetime.strptime(start_date.replace('Z', '+00:00'), '%Y-%m-%dT%H:%M:%S.%f%z')
         self.end_date = datetime.strptime(end_date.replace('Z', '+00:00'), '%Y-%m-%dT%H:%M:%S.%f%z')
         self.location = location
+        self.owner = owner
 
     @staticmethod
     def get_top_events():
